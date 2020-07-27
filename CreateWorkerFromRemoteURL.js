@@ -7,8 +7,7 @@ function createWorkerFromRemoteURL(url='', fetchSrc=false){
 		.then(response => response.text())
 		.then(text => {
 			// Based on http://jsfiddle.net/uqcFM/49/
-			window.URL = window.URL || window.webkitURL;
-			var blob;
+			let blob;
 			try{
 				blob = new Blob([text], {type: 'application/javascript'});
 			}catch(e){
