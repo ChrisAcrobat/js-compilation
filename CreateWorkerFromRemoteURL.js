@@ -19,7 +19,7 @@ function createWorkerFromRemoteURL(url='', fetchSrc=false){
 					blob.append(text);
 					blob = blob.getBlob();
 				}
-				worker = new Worker(createObjectURL(new Blob(['importScripts("'+url+'");'], {type: 'application/javascript'})));
+				worker = new Worker(createObjectURL(blob));
 			});
 			return worker;
 		}
