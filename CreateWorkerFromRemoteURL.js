@@ -6,7 +6,8 @@ function createWorkerFromRemoteURL(url='', fetchSrc=false){
 	}
 	if(fetchSrc){
 		async function asyncFetch(url){
-			fetch(url)
+			let worker = undefined;
+			await fetch(url)
 			.then(response => response.text())
 			.then(text => {
 				let blob;
@@ -18,14 +19,12 @@ function createWorkerFromRemoteURL(url='', fetchSrc=false){
 					blob.append(text);
 					blob = blob.getBlob();
 				}
-				let urlObject = createObjectURL(blob);
-				return new Worker(urlObject);
+				worker = new Worker(createObjectURL(new Blob(['importScripts("'+url+'");'], {type: 'application/javascript'})));
 			});
+			return worker;
 		}
 		return asyncFetch(url);
 	}else{
-		let urlObject = createObjectURL(new Blob(['importScripts("'+url+'");'], {type: 'application/javascript'}));
-		let worker = new Worker(urlObject);
-		return worker;
+		return new Worker(createObjectURL(new Blob(['importScripts("'+url+'");'], {type: 'application/javascript'})));
 	}
 }
